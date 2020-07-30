@@ -1,5 +1,5 @@
-name: 'Draft'
-description: 'No description.'
+name: 'Updates Release'
+description: 'Updates release.'
 inputs:
   token:
     description: 'GitHub token used by action.'
