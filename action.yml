@@ -18,6 +18,16 @@ inputs:
   body:
     description: 'Body of release.'
     required: false
+  commitish:
+    description: 'Target commitish of release.'
+    default: master
+    required: false
+  draft:
+    description: 'Determines whether to make release as draft.'
+    required: false
+  prerelease:
+    description: 'Determines whether to make release as prerelease.'
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'

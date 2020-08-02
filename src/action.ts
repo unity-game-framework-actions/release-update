@@ -1,15 +1,22 @@
 import * as utility from './utility'
 
-export async function updateRelease(owner: string, repo: string, idOrTag: string, name: string, body: string): Promise<void> {
+export async function updateRelease(owner: string, repo: string, idOrTag: string, change: any): Promise<void> {
   const release = await utility.getRelease(owner, repo, idOrTag)
+  const updated = update(release, change)
 
-  if (name !== '') {
-    release.name = name
+  await utility.updateRelease(owner, repo, updated)
+}
+
+function update(release: any, change: any): any {
+  const keys = Object.keys(change)
+
+  for (const key of keys) {
+    const value = change[key]
+
+    if (value !== '' && value !== false) {
+      release[key] = value
+    }
   }
 
-  if (body !== '') {
-    release.body = body
-  }
-
-  await utility.updateRelease(owner, repo, release)
+  return release
 }

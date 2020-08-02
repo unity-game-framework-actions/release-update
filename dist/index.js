@@ -3760,19 +3760,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateRelease = void 0;
 const utility = __importStar(__webpack_require__(880));
-function updateRelease(owner, repo, idOrTag, name, body) {
+function updateRelease(owner, repo, idOrTag, change) {
     return __awaiter(this, void 0, void 0, function* () {
         const release = yield utility.getRelease(owner, repo, idOrTag);
-        if (name !== '') {
-            release.name = name;
-        }
-        if (body !== '') {
-            release.body = body;
-        }
-        yield utility.updateRelease(owner, repo, release);
+        const updated = update(release, change);
+        yield utility.updateRelease(owner, repo, updated);
     });
 }
 exports.updateRelease = updateRelease;
+function update(release, change) {
+    const keys = Object.keys(change);
+    for (const key of keys) {
+        const value = change[key];
+        if (value !== '' && value !== false) {
+            release[key] = value;
+        }
+    }
+    return release;
+}
 
 
 /***/ }),
@@ -5031,7 +5036,17 @@ function run() {
             const idOrTag = core.getInput('id', { required: true });
             const name = core.getInput('name');
             const body = core.getInput('body');
-            yield action.updateRelease(repository.owner, repository.repo, idOrTag, name, body);
+            const commitish = core.getInput('commitish');
+            const draft = core.getInput('draft') === 'true';
+            const prerelease = core.getInput('prerelease') === 'true';
+            const change = {
+                name: name,
+                body: body,
+                commitish: commitish,
+                draft: draft,
+                prerelease: prerelease
+            };
+            yield action.updateRelease(repository.owner, repository.repo, idOrTag, change);
         }
         catch (error) {
             core.setFailed(error.message);
