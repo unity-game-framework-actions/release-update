@@ -1,6 +1,7 @@
 {
   "name": "release-update",
   "version": "0.1.0",
+  "displayName": "Release Update",
   "description": "Updates release.",
   "main": "lib/main.js",
   "scripts": {
