@@ -1,4 +1,4 @@
-name: 'Updates Release'
+name: 'Release Update'
 description: 'Updates release.'
 inputs:
   token:
